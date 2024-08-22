@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Pályázatírás Workshop 3 Program - Inspiráló Design</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #50e3c2;
+            --background-color: #f0f4f8;
+            --text-color: #2c3e50;
+            --accent-color: #ff6b6b;
+            --calm-color: #a0d7e7;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            background-image: linear-gradient(120deg, #f0f4f8 0%, #e0eafc 100%);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary-color);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            font-size: 2em;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+
+        .program-item {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .program-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .icon {
+            color: var(--secondary-color);
+            margin-right: 15px;
+            font-size: 1.5em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .notes {
+            width: 100%;
+            height: 120px;
+            margin-top: 15px;
+            border: 2px solid var(--calm-color);
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'Open Sans', sans-serif;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        .notes:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            padding: 12px 25px;
+            margin-top: 15px;
+            cursor: pointer;
+            border-radius: 25px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.2);
+        }
+
+        .timer {
+            font-size: 1.4em;
+            margin-top: 15px;
+            color: var(--accent-color);
+            font-weight: 700;
+            text-align: center;
+            background-color: rgba(255,107,107,0.1);
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        #reportView {
+            display: none;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #reportView, #reportView * {
+                visibility: visible;
+            }
+            #reportView {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(74, 144, 226, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(74, 144, 226, 0);
+            }
+        }
+
+        .active-task {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div id="password-protection" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: white; display: flex; justify-content: center; align-items: center; z-index: 1000;">
+        <div>
+          <h2>Kérlek, add meg a jelszót a workshop anyagának megtekintéséhez:</h2>
+          <input type="password" id="password-input" />
+          <button onclick="checkPassword()">Belépés</button>
+        </div>
+      </div>
+    
+    <div class="container">
+        <h1>AI Pályázatírás Workshop 3 Program</h1>
+    
+    <div id="mainContent">
+        <div class="program-item">
+            <h2><i class="fas fa-bullseye icon"></i>Cél</h2>
+            <p>A workshop célja az előző heti feladatok eredményeinek áttekintése, egy részletes roadmap kidolgozása a következő időszakra, valamint egy probléma validálási terv elkészítése.</p>
+        </div>
+        
+        <div class="program-item">
+            <h2><i class="fas fa-clock icon"></i>Időtartam: 3 óra</h2>
+        </div>
+        
+        <div class="program-item" id="task1">
+            <h2><i class="fas fa-play icon"></i>1. Bevezetés és áttekintés (10 perc)</h2>
+            <ul>
+                <li>A workshop céljának és menetének ismertetése</li>
+                <li>Rövid visszatekintés az előző workshop főbb pontjaira</li>
+            </ul>
+            <div class="timer">00:00</div>
+            <button onclick="startTimer('task1', 10)">Kezdés</button>
+            <button onclick="pauseTimer('task1')">Szünet</button>
+            <button onclick="endTimer('task1')">Befejezés</button>
+        </div>
+        
+        <div class="program-item" id="task2">
+            <h2><i class="fas fa-comments icon"></i>2. Heti beszámolók (45 perc)</h2>
+            <ul>
+                <li>Minden résztvevő beszámol az elmúlt hét tevékenységeiről és a kiosztott feladatok elvégzéséről (15 perc/fő)</li>
+                <li>Rövid kérdések és válaszok minden beszámoló után</li>
+            </ul>
+            <textarea class="notes" placeholder="Jegyzetek..."></textarea>
+            <div class="timer">00:00</div>
+            <button onclick="startTimer('task2', 45)">Kezdés</button>
+            <button onclick="pauseTimer('task2')">Szünet</button>
+            <button onclick="endTimer('task2')">Befejezés</button>
+        </div>
+        
+        <div class="program-item" id="task3">
+            <h2><i class="fas fa-road icon"></i>3. Roadmap kidolgozása (60 perc)</h2>
+            <h3>a) Feladatok listázása (25 perc)</h3>
+            <ul>
+                <li>Brainstorming: Milyen feladatokat kell elvégeznünk a következő időszakban?</li>
+                <li>A feladatok kategorizálása</li>
+            </ul>
+            <h3>b) Ütemezés (35 perc)</h3>
+            <ul>
+                <li>A feladatok priorizálása</li>
+                <li>1 hónapos és 6 hónapos célok meghatározása</li>
+                <li>A feladatok időbeli elhelyezése a roadmap-en</li>
+            </ul>
+            <textarea class="notes" placeholder="Jegyzetek..."></textarea>
+            <div class="timer">00:00</div>
+            <button onclick="startTimer('task3', 60)">Kezdés</button>
+            <button onclick="pauseTimer('task3')">Szünet</button>
+            <button onclick="endTimer('task3')">Befejezés</button>
+        </div>
+        
+        <div class="program-item" id="task4">
+            <h2><i class="fas fa-coffee icon"></i>4. Szünet (15 perc)</h2>
+            <div class="timer">00:00</div>
+            <button onclick="startTimer('task4', 15)">Kezdés</button>
+            <button onclick="pauseTimer('task4')">Szünet</button>
+            <button onclick="endTimer('task4')">Befejezés</button>
+        </div>
+        
+        <div class="program-item" id="task5">
+            <h2><i class="fas fa-check-double icon"></i>5. Probléma validálási terv kidolgozása (45 perc)</h2>
+            <ul>
+                <li>A fő probléma(k) rövid áttekintése</li>
+                <li>Brainstorming: Milyen módszerekkel tudjuk validálni a problémát?</li>
+                <li>A validálási módszerek értékelése és kiválasztása</li>
+                <li>Konkrét lépések és felelősök meghatározása a validáláshoz</li>
+            </ul>
+            <textarea class="notes" placeholder="Jegyzetek..."></textarea>
+            <div class="timer">00:00</div>
+            <button onclick="startTimer('task5', 45)">Kezdés</button>
+            <button onclick="pauseTimer('task5')">Szünet</button>
+            <button onclick="endTimer('task5')">Befejezés</button>
+        </div>
+        
+        <div class="program-item" id="task6">
+            <h2><i class="fas fa-tasks icon"></i>6. Következő lépések és feladatok kiosztása (15 perc)</h2>
+            <ul>
+                <li>A roadmap és a validálási terv alapján konkrét feladatok meghatározása</li>
+                <li>Felelősök és határidők kijelölése</li>
+                <li>A következő workshop időpontjának és fő témáinak egyeztetése</li>
+            </ul>
+            <textarea class="notes" placeholder="Jegyzetek..."></textarea>
+            <div class="timer">00:00</div>
+            <button onclick="startTimer('task6', 15)">Kezdés</button>
+            <button onclick="pauseTimer('task6')">Szünet</button>
+            <button onclick="endTimer('task6')">Befejezés</button>
+        </div>
+        
+        <h2><i class="fas fa-table icon"></i>Feladatok táblázata</h2>
+        <table id="taskTable">
+            <tr>
+                <th>Feladat</th>
+                <th>Felelős</th>
+                <th>Határidő</th>
+                <th>Státusz</th>
+            </tr>
+            <tr>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+            </tr>
+        </table>
+        <button onclick="addRow()">Új sor hozzáadása</button>
+        <button onclick="exportData()">Adatok exportálása</button>
+        <input type="file" id="importFile" style="display:none;" onchange="importData(this.files[0])">
+        <button onclick="document.getElementById('importFile').click()">Adatok importálása</button>
+        <button onclick="generateReport()">Riport generálása</button>
+    </div>
+
+    <div id="reportView"></div>
+</div>
+
+    <script>
+        function checkPassword() {
+            const password = "kitorunkamatrixbol"; // Itt állítsd be a kívánt jelszót
+            const input = document.getElementById("password-input").value;
+            if (input === password) {
+                document.getElementById("password-protection").style.display = "none";
+            } else {
+                alert("Helytelen jelszó!");
+            }
+        }
+        let timers = {};
+
+        function startTimer(taskId, duration) {
+            if (timers[taskId]) {
+                clearInterval(timers[taskId].interval);
+            }
+            let startTime = Date.now() - (timers[taskId]?.elapsed || 0);
+            let timerElement = document.querySelector(`#${taskId} .timer`);
+            
+            timers[taskId] = {
+                interval: setInterval(() => {
+                    let elapsedTime = Date.now() - startTime;
+                    let minutes = Math.floor(elapsedTime / 60000);
+                    let seconds = Math.floor((elapsedTime % 60000) / 1000);
+                    timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    if (elapsedTime >= duration * 60000) {
+                        clearInterval(timers[taskId].interval);
+                        alert(`Idő lejárt: ${taskId}`);
+                    }
+                }, 1000),
+                elapsed: timers[taskId]?.elapsed || 0
+            };
+        }
+
+        function pauseTimer(taskId) {
+            if (timers[taskId]) {
+                clearInterval(timers[taskId].interval);
+                timers[taskId].elapsed = Date.now() - (timers[taskId].startTime || Date.now());
+            }
+        }
+
+        function endTimer(taskId) {
+            if (timers[taskId]) {
+                clearInterval(timers[taskId].interval);
+                timers[taskId] = null;
+                document.querySelector(`#${taskId} .timer`).textContent = "00:00";
+            }
+        }
+
+        function addRow() {
+            var table = document.getElementById("taskTable");
+            var row = table.insertRow(-1);
+            for (var i = 0; i < 4; i++) {
+                var cell = row.insertCell(i);
+                cell.contentEditable = true;
+            }
+        }
+
+        function exportData() {
+            var notes = document.querySelectorAll('.notes');
+            var notesData = Array.from(notes).map(note => note.value);
+            
+            var table = document.getElementById("taskTable");
+            var tableData = [];
+            for (var i = 1; i < table.rows.length; i++) {
+                var rowData = [];
+                for (var j = 0; j < table.rows[i].cells.length; j++) {
+                    rowData.push(table.rows[i].cells[j].innerText);
+                }
+                tableData.push(rowData);
+            }
+            
+            var data = {
+                notes: notesData,
+                tasks: tableData
+            };
+            
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+            var downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "workshop_data.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        function importData(file) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var data = JSON.parse(e.target.result);
+                var notes = document.querySelectorAll('.notes');
+                notes.forEach((note, index) => {
+                    if (data.notes[index]) {
+                        note.value = data.notes[index];
+                    }
+                });
+                
+                var table = document.getElementById("taskTable");
+                while(table.rows.length > 1) {
+                    table.deleteRow(1);
+                }
+                data.tasks.forEach((rowData) => {
+                    var row = table.insertRow(-1);
+                    rowData.forEach((cellData, cellIndex) => {
+                        var cell = row.insertCell(cellIndex);
+                        cell.contentEditable = true;
+                        cell.innerText = cellData;
+                    });
+                });
+            };
+            reader.readAsText(file);
+        }
+
+        function generateReport() {
+            var reportContent = `
+                <h1>AI Pályázatírás Workshop 3 Riport</h1>
+                <p><strong>Dátum:</strong> ${new Date().toLocaleDateString()}</p>
+                
+                <h2>Workshop Áttekintés</h2>
+                <p>${document.querySelector('.program-item p').innerText}</p>
+                
+                <h2>Jegyzetek</h2>
+            `;
+
+            document.querySelectorAll('.program-item').forEach((item, index) => {
+                const title = item.querySelector('h2').innerText;
+                const notes = item.querySelector('.notes');
+                if (notes && notes.value) {
+                    reportContent += `
+                        <h3>${title}</h3>
+                        <p>${notes.value}</p>
+                    `;
+                }
+            });
+
+            reportContent += `<h2>Feladatok</h2>`;
+            var table = document.getElementById("taskTable");
+            reportContent += `<table border="1">`;
+            for (var i = 0; i < table.rows.length; i++) {
+                reportContent += "<tr>";
+                for (var j = 0; j < table.rows[i].cells.length; j++) {
+                    reportContent += i === 0 ? "<th>" : "<td>";
+                    reportContent += table.rows[i].cells[j].innerText;
+                    reportContent += i === 0 ? "</th>" : "</td>";
+                }
+                reportContent += "</tr>";
+            }
+            reportContent += `</table>`;
+
+            var reportView = document.getElementById("reportView");
+            reportView.innerHTML = reportContent;
+            reportView.style.display = "block";
+            document.getElementById("mainContent").style.display = "none";
+
+            // Add a button to go back to the main view
+            var backButton = document.createElement("button");
+            backButton.innerText = "Vissza a szerkesztéshez";
+            backButton.onclick = function() {
+                reportView.style.display = "none";
+                document.getElementById("mainContent").style.display = "block";
+            };
+            reportView.appendChild(backButton);
+
+            // Add a button to print the report
+            var printButton = document.createElement("button");
+            printButton.innerText = "Riport nyomtatása";
+            printButton.onclick = function() {
+                window.print();
+            };
+            reportView.appendChild(printButton);
+        }
+    </script>
+</body>
+</html>
